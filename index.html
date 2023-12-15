@@ -72,7 +72,9 @@
             <div class="High_Level_Design" style="background:grey;">
                 <h1>High Level Design</h1>
                 <img src="HigherLevelBlockDiagram.png" alt="Higher Level Design" style="width:824px;height:416px;">
-                <caption>Figure 1: Higher Level Block Diagram</caption>
+                <section>
+                    <caption>Figure 1: Higher Level Block Diagram</caption>
+                </section>
                 <p></p>
                 <section>
                     <div class="Boids_Algorithm_Background">
@@ -123,7 +125,7 @@
                     <div class="Hardware_Software_Tradeoffs">
                         <h2>Hardware/Software Tradeoffs</h2>
                         <section>
-                            <p></p>
+                            <p>There's no trade-off between hardware and software. They provide different functionalities in this project. Hardware provides DAC, tty connections, VGA output while software provides the simulation algorithm, system control and hardware resource manipulations. They cannot replace each other in any manners.</p>
                         </section>
                     </div>
                     <div class="Relationship_Standards">
@@ -208,6 +210,8 @@
                     <h3>Synchronization Problems</h3>
                     <p>In our program design, two cores mainly perform different functionalities, so we don't need the explicit synchronization between the two cores. However, there's one situation that we need to solve by waiting on one core. While core0 did the particle plotting, core1 will move the volume line and erase particles outside the bound. In the experiment, sometimes particles outside the bound won't be erased. We debugged for a long time and found that the erasing was slightly earlier than the particle drawing. Some particles will remain unerased permanently. Eventually, we solved this problem by adding PT_YIELD_usec(5000) before the erasing to make sure the erasing was an 'atomic-like' function that won't be interrupted or switched.</p>
                     
+                    <h3>Trick parts</h3>
+                    <p>One of the most tricky parts in this project is to deal with PT_thread library and timer interrupt. In most of the software designs, we don’t need to tackle the low level or even the hardware in such a way like this. The operating system will take care of most of the hardware-related problems, and we only need to focus on the algorithm itself. But the bare metal design provides a more freedom, aggressive way to develop software applications. We can control the timer yourself and don’t need to consider the performance consumed by other processes: we have full control of the hardware. The tradeoff is that we don’t have services provided by modern operating systems such as memory protections and multitasking which makes it much harder when memory leaking happens.</p>
                     
                     <!-- <section>
                         <p></p>
@@ -299,7 +303,9 @@
                     </section>
                 <div class="Results_Expectations_Future_Changes">
                     <h2>RP2040 Program Design</h2>
+                    <p>In terms of program design, I think the future work could probably be performance optimization. Some places use floating point computation. If the value range is carefully managed, all calculations can be safely converted to fix15 point numbers and therefore increases the performance. With longer spare time, it’s possible to either increase the frames per second (FPS) or more particles in simulation. Increasing FPS is more important in this project. By higher FPS, the particle movement can be more fine-grained and thus can eliminate the unideal situation when the volume becomes lower. The collision algorithm can be optimized to O(N) instead of O(N^2). The implementation could be much more complex that some data structure like binary tree needed to be used to describe the 2-D plane. With higher computational efficiency, we can add more particles to simulate the situation with higher pressure.</p>
                     
+                    <p>Moveover, our particle model can be used for computational fluid dynamics. For example, we can put a wing inside our model and calculate the sum of hitting force to determine the lifting force. In this case, viscosity between particles and the wing can also be implemented.</p>
                     
                 </div>
                 <div class="Intellectual_Property_Considerations">
@@ -359,7 +365,8 @@
                 <div class = "Appendix_b">
                     <h2>Appendix B: Commented Code</h2>
                     <section>
-                        <p></p>
+                        <!-- <p></p> -->
+                        <a href="https://drive.google.com/drive/u/1/folders/1DhF3gPnAu7L_WfxDLWLMJXvCW3s5oXEf">Source Code</a>
                     </section>
                 </div>
                 <div class = "Appendix_c">
