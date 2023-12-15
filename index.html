@@ -64,7 +64,7 @@
             <div class="Introduction" style="background:grey;">
                 <h1>Introduction</h1>
                 <section>
-                    <p> The boids lab earlier this semester inspired us to understand other natural phenomena, so naturally we began to research different physics theorems. Due to the nature of the boids lab we realized we could create an ideal gas law simulation that followed kinetic molecular theory. In order to verify the simulation was working as physics would expect, we implemented a representation of Boyle's law and displayed the kinetic energy average of the particles. 
+                    <p> The boids lab earlier this semester inspired us to understand other natural phenomena, so naturally we began to research different physics theorems. Due to the nature of the boids lab, we realized we could create an ideal gas law simulation that followed kinetic molecular theory. In order to verify the simulation was working as physics would expect, we implemented a representation of Boyle's law and displayed the kinetic energy average of the particles. 
                         </p>
                 </section>
             </div>
@@ -80,7 +80,7 @@
                     <div class="Boids_Algorithm_Background">
                         <h2>Boids Algorithm Background</h2>
                         <section>
-                            <p>Using different portions of the boids pseudocode from the <a href="https://vanhunteradams.com/Pico/Animal_Movement/Boids-predator.html">4760/5730 Boids Algortithm page</a> we were able to  implement particle like behavior. Below are segments of the code that we found useful when simulating our particle movement.
+                            <p>Using different portions of the boids pseudocode from the <a href="https://vanhunteradams.com/Pico/Animal_Movement/Boids-predator.html">4760/5730 Boids Algorithm page</a> we were able to  implement particle like behavior. Below are segments of the code that we found useful when simulating our particle movement.
                             </p>
                             <img src="Boidscodepart1.png" alt="Boids Code Part 1" style="width:804px;height:835px;">
                             <img src="Boidscodepart2.png" alt="Boids Code Part 2" style="width:804px;height:378px;">
@@ -100,38 +100,26 @@
                         
                         <h2>Collision</h2>
                         <section>
-                            <p>In our collision simulation, we have the assumption that all particles have the same mass and the same velocity. Therefore the collision model can be largely simplified. However we cannot oversimplify the model. In our first model, we assumed that each particle has an infinite small volume and force field, so when two particles collide, we simply swap their moving direction. This made no difference between the non-colliding model.
-                                Therefore, we introduced the second model: We assumed each particle had a specific volume. To implement this concept, we can translate it to: we perform collision of these 2 particles if their distance is within twice their radius.
+                            <p>In our collision simulation, we have the assumption that all particles have the same mass and the same velocity. Therefore, the collision model can be largely simplified. However, we cannot oversimplify the model. In our first model, we assumed that each particle has an infinite small volume and force field, so when two particles collide, we simply swap their moving direction. This made no difference between the non-colliding model.
+                                Therefore, we introduced the second model: We assumed each particle had a specific volume. To implement this concept, we can translate it to: we perform collision of these two particles if their distance is within twice their radius.
                             </p>
                             <img src="collision.png" alt="collision" style="width:800px;height:390px;">
                             <section>
                                 <caption>Figure 10: collision illustration</caption>
                             </section>
-                            <p>The left picture shows the collision of two particles with the conservation of momentum. We can convert it to the right one for better understanding. Because the particle mass  and the velocities are the same, we only need to consider the direction after the collision. Thus, the surface of the right picture circle serves as a mirror. Therefore, the collision can be modeled as following:</p>
+                            <p>The left picture shows the collision of two particles with the conservation of momentum. We can convert it to the right one for better understanding. Because the particle mass  and the velocities are the same, we only need to consider the direction after the collision. Thus, the surface of the right picture circle serves as a mirror. Therefore, the collision can be modeled as follows:</p>
                             <img src="collision_formula.png" alt="collision_formula" style="width:400px;height:80px;">
                             <section>
                                 <caption>Figure 11: collision_formula</caption>
                             </section>
-                            <p>Where vector u is the normalized vector that points from the center of the circle to reflecting point and 2(v  u) u  serves as the speed difference that v needs to change which is perpendicular to the surface of the circle. This equation can perfectly simulate the mirror reflection without too much computation cost and implementation complexity.</p>
+                            <p>Where vector u is the normalized vector that points from the center of the circle to reflecting point and 2(v  u) u  serves as the speed difference that v needs to change which is perpendicular to the surface of the circle. This equation can simulate the mirror reflection without too much computation cost and implementation complexity.</p>
                             
                         </section>
                     </div>
-                    <div class="Logical_Structure">
-                        <h2>Logical Structure</h2>
-                        <section>
-                            <p></p>
-                        </section>
-                    </div>  
                     <div class="Hardware_Software_Tradeoffs">
                         <h2>Hardware/Software Tradeoffs</h2>
                         <section>
-                            <p>There's no trade-off between hardware and software. They provide different functionalities in this project. Hardware provides DAC, tty connections, VGA output while software provides the simulation algorithm, system control and hardware resource manipulations. They cannot replace each other in any manners.</p>
-                        </section>
-                    </div>
-                    <div class="Relationship_Standards">
-                        <h2>Relationship to Standards</h2>
-                        <section>
-                            <p></p>
+                            <p>There is no trade-off between hardware and software. They provide different functionalities in this project. Hardware provides DAC, Putty connections, and VGA output while software provides the simulation algorithm, system control and hardware resource manipulations. They cannot replace each other in any manner.</p>
                         </section>
                     </div>
             </div>
@@ -139,7 +127,7 @@
             <div class = "Program_hadrware_design" style="background:grey;">
                 <h1>Program/Hardware Design</h1>
                     <section>
-                        <p>Our main objective was to adapt the boids code such that the particles collided like gas particles. From there we adapted the code so the user could input different amounts for the volume and see the different results of pressure (hitting rate per second) versus time. After getting a working model of the constant volume, we modified it by integrating a synthesized beep. When the beep was working correctly, we adjusted the code to beep every time a particle hit the wall of its volume. Once we had developed a constant volume, we made a simulation to develop pressure versus volume graphs at varying temperatures (chosen by the user).  To verify that our pressure versus volume graph was behaving as expected, we plotted Boyle's law. Finally, we added constant pressure graph so the user could see how kinetic energy would need to decrease if volume decreased at a constant pressure for varying temperatures. To verify that this was working correctly we found what the pressure should be based on the chosen temperature and plotted the result.</p>
+                        <p>Our main objective was to adapt the boids code such that the particles collided like gas particles. From there we adapted the code so the user could input different amounts for the volume and see the different results of pressure (hitting rate per second) versus time. After getting a working model of the constant volume, we modified it by integrating a synthesized beep. When the beep was working correctly, we adjusted the code to beep every time a particle hit the wall of its volume. Once we had developed a constant volume, we made a simulation to develop pressure versus volume graphs at varying temperatures (chosen by the user).  To verify that our pressure versus volume graph was behaving as expected, we plotted Boyle's law. Finally, we added a constant pressure graph so the user could see how kinetic energy would need to decrease if volume decreased at a constant pressure for varying temperatures. To verify that this was working correctly we found what the pressure should be based on the chosen temperature and plotted the result.</p>
                     </section>
                 <div class="RP2040_design">
                     <h2>RP2040 Program Design</h2>
@@ -168,7 +156,7 @@
                         </p>
                     </section>
                     <p>
-                        Our design principle is by incremental design. We complete each functionality by gradually adding features on it and making sure it works within our expectation every time. This is one of the most efficient ways to build up a complex system and we can narrow down the place that is most likely to produce bugs. Every time a feature is created, we would set up several hand-crafted unit tests to ensure the basic functionality. The methodology helps a lot even when the project scale grows up. More specifically and practically, we made the program highly modularized, in which we separated each functionality into several functions and made sure each function won't be too long to read or debug. Moreover, we try to keep everything as function calls instead of macro because the function can make a good isolation for variable names and take the advantage of C's type checking. There should be little or no drawback with modern compiler architecture. Functions can be inlined and therefore can have the same performance with macro which put the program into risk by modifying the program in compile time.
+                        Our design principle is an incremental design. We complete each functionality by gradually adding features on it and making sure it works within our expectation every time. This is one of the most efficient ways to build up a complex system and we can narrow down the place that is most likely to produce bugs. Every time a feature is created, we would set up several hand-crafted unit tests to ensure the basic functionality. The methodology helps a lot even when the project scale grows up. More specifically and practically, we made the program highly modularized, in which we separated each functionality into several functions and made sure each function will not be too long to read or debug. Moreover, we try to keep everything as function calls instead of macro because the function can make a good isolation for variable names and take the advantage of C's type checking. There should be little or no drawback with modern compiler architecture. Functions can be inlined and therefore can have the same performance with macro which puts the program at risk by modifying the program in compile time.
                     </p>
                     
                     <h2>Main Functions Explanation</h2>
@@ -183,35 +171,35 @@
                         All particles are stored in global variables and therefore can be accessed by every function, but this slightly decreases the safety of the program.
                     <!-- </p>
                     <p> -->
-                        For each 2 particles, if they are both in each other's visual range, then the collision happens. The collision is explained in the physics section. The drawing part is relatively simple: for each frame, the previous positions will be erased, the position will be updated and the new position will be printed (if the position is inside the bound).
+                        For each two particles, if they are both in each other's visual range, then a collision happens. The collision is explained in the physics section. The drawing part is relatively simple: for each frame, the previous positions will be erased, the position will be updated, and the new position will be printed (if the position is inside the bound).
                     <!-- </p>
                     <p> -->
-                        This is the core computation in our project. If we don't perform the collision the time complexity of this function will be O(N), while our version of collision algorithm complexity is O(N^2) which is much higher and became the bottleneck. of the whole simulation. However the collision is needed because we need to increase the 'chaos' of our system. 
+                        This is the core computation in our project. If we do not perform the collision the time complexity of this function will be O(N), while our version of collision algorithm complexity is O(N^2) which is much higher and became the bottleneck. of the whole simulation. However, collisions are essential because we need to increase the 'chaos' of our system. 
                     </p>
                     <p>
-                        When the volume being changed, the wave front will be generated by the moving wall which makes the measurement fluctuate and imprecise especially when the kinetic energy is at lower state. Therefore, we still need the collision to increase the entropy even though, logically, the pressure will be measured the same in a long-term experiment.
+                        When the volume was changed, the moving wall generated a wavefront which made the measurement fluctuate and gave an imprecise measurement of collisions especially when the kinetic energy was at a lower state. Therefore, we still need collisions to increase the entropy even though, logically, the pressure will be measured the same in a long-term experiment.
                     <!-- </p>
                     <p> -->
-                        By the experiment result, the collision actually helps a lot. The wave-like moving particles will be eliminated in a short time (in 3-4 wave period) and quickly make the measured pressure converging to the ideal line. This is obvious when the volume is adjusted in a short period of time.                    
+                        According to the experimental result, the collision actually helps a lot. The wave-like moving particles will be eliminated in a short time (in 3-4 wave period) and quickly make the measured pressure converge to the ideal line. This is obvious when the volume is adjusted in a short period of time.                    
                     </p>
                     
-                    <h3>Beeping sound generator</h3>
-                    <p>The sound is generated by Direct Digital Synthesis Algorithm (DDS). The target sine wave will be incrementally generated with the timer interrupt callback. When a particle hits the wall, a swoop sound will be generated once. While the original sound is synthesized every 25 us, we change the frequency of it to 75 but change the increment of the sin phase 3 times larger. This can produce the sound with lower computation consumption. The reason we adjust it to 3 times lower is because if we keep the same as 25 us, the other functionality will become lagging which means it took too much CPU time to do the sound generation. The lowering seems no problem to produce the same result. However, we cannot ignore the noise sound produced by the square wave coming from DDS.</p>
+                    <h3>Beeping Sound Generator</h3>
+                    <p>The sound is generated by Direct Digital Synthesis Algorithm (DDS). The target sine wave will be incrementally generated with the timer interrupt callback. When a particle hits the wall, a swoop sound will be generated once. While the original sound is synthesized every 25 us, we change the frequency of it to 75 but change the increment of the sin phase three times larger. This can produce the sound with lower computation consumption. The reason we adjust it to three times lower is because if we keep the same as 25 us, the other functionality will become lagging which means it took too much CPU time to do the sound generation. The lowering seems to have no problem producing the same result. However, we cannot ignore the noise sound produced by the square wave coming from DDS.</p>
                     <img src="square_wave.png" alt="square_wave" style="width:800px;height:250px;">
                     <section>
-                        <caption>Figure 11: Fourier transform of square wave</caption>
+                        <caption>Figure 11: Fourier transform of a square wave</caption>
                     </section>
                     <p>For a perfect square wave, the first harmonic noise comes from 3f. We can treat the procedure of DDS as the perfect sine wave combining with a square wave with the frequency of timer callback. Theoretically, the absolute threshold of hearing of humans is from 20 to 20000 hz. The synthesis period should be higher than 50us. When we adjust it to 75, we can start to hear some unexpected noises, but we treated it as an acceptable trade-off.</p>
                     
-                    <h3>Low pass filter for graph plotting</h3>
-                    <p>We output the current measured pressure every frame. However if the volume change is too large, the measured pressure will be several unwanted high frequency peaks. Therefore, we implemented a software low pass filter that can average the most recent 5 plotting points. The data structure we use is a queue which is the most suitable one to use in this scenario. Every time we only need to insert and pop one value and calculate the average.
+                    <h3>Low Pass Filter for Graph Plotting</h3>
+                    <p>We output the current measured pressure every frame. However, if the volume change is too large, the measured pressure will be several unwanted high frequency peaks. Therefore, we implemented a software low pass filter that can average the most recent five plotting points. The data structure we use is a queue which is the most suitable one to use in this scenario. Every time we only need to insert and pop one value and calculate the average.
                     </p>
                     
                     <h3>Synchronization Problems</h3>
-                    <p>In our program design, two cores mainly perform different functionalities, so we don't need the explicit synchronization between the two cores. However, there's one situation that we need to solve by waiting on one core. While core0 did the particle plotting, core1 will move the volume line and erase particles outside the bound. In the experiment, sometimes particles outside the bound won't be erased. We debugged for a long time and found that the erasing was slightly earlier than the particle drawing. Some particles will remain unerased permanently. Eventually, we solved this problem by adding PT_YIELD_usec(5000) before the erasing to make sure the erasing was an 'atomic-like' function that won't be interrupted or switched.</p>
+                    <p>In our program design, two cores mainly perform different functionalities, so we do not need the explicit synchronization between the two cores. However, there is one situation that we need to solve by waiting on one core. While core0 did the particle plotting, core1 will move the volume line and erase particles outside the bound. In the experiment, sometimes particles outside the bound will not be erased. We debugged for a long time and found that the erasing was slightly earlier than the particle drawing. Some particles will remain unerased permanently. Eventually, we solved this problem by adding PT_YIELD_usec(5000) before the erasing to make sure the erasing was an 'atomic-like' function that will not be interrupted or switched.</p>
                     
-                    <h3>Trick parts</h3>
-                    <p>One of the most tricky parts in this project is to deal with PT_thread library and timer interrupt. In most of the software designs, we don’t need to tackle the low level or even the hardware in such a way like this. The operating system will take care of most of the hardware-related problems, and we only need to focus on the algorithm itself. But the bare metal design provides a more freedom, aggressive way to develop software applications. We can control the timer yourself and don’t need to consider the performance consumed by other processes: we have full control of the hardware. The tradeoff is that we don’t have services provided by modern operating systems such as memory protections and multitasking which makes it much harder when memory leaking happens.</p>
+                    <h3>Trick Parts</h3>
+                    <p>One of the most difficult parts in this project is to deal with PT_thread library and timer interrupt. In most of the software designs, we did not need to tackle the low level or even the hardware in this way. The operating system took care of most of the hardware-related problems, and we only needed to focus on the algorithm itself. The bare metal design provided us more freedom with its aggressive development of software applications. We could control the timer ourselves and did not need to consider the performance consumed by other processes: we had full control of the hardware. The tradeoff is that we did not have services provided by modern operating systems such as memory protections and multitasking which made it much harder when memory leaking happened.</p>
                     
                     <!-- <section>
                         <p></p>
@@ -256,12 +244,6 @@
                     </section>
                         <p>Due to the issues we were encountering with collisions, we moved to make our pressure vs. volume graph and after developing that graph moved back to the collision. By having the pressure vs. volume graph taking in data from our simulation we were able to see a data representation and we were able to see the wavefront issue graphically. This graphic allowed us to develop a different collision algorithm and then implemented a small visual range to ensure collisions (like in the boids lab) which allowed the simulation to return to the expected ideal gas behavior.</p>
                 </div>
-                <div class = "Speed of Execution">
-                    <h2>Speed of Execution</h2>
-                    <section>
-                        <p></p>
-                    </section>
-                </div>
                 <div class = "Accuracy">
                     <h2>Accuracy</h2>
                     <section>
@@ -284,12 +266,6 @@
                         <caption>Figure 7: Simulation of the constant pressure at different temperatures.</caption>
                     </section>
                 </div>
-                <div class = "Usability">
-                    <h2>Usability</h2>
-                    <section>
-                        <p></p>
-                    </section>
-                </div>
             </div>
             <hr>
             <div class = "Conclusion" style="background:grey;">
@@ -303,9 +279,8 @@
                     </section>
                 <div class="Results_Expectations_Future_Changes">
                     <h2>RP2040 Program Design</h2>
-                    <p>In terms of program design, I think the future work could probably be performance optimization. Some places use floating point computation. If the value range is carefully managed, all calculations can be safely converted to fix15 point numbers and therefore increases the performance. With longer spare time, it’s possible to either increase the frames per second (FPS) or more particles in simulation. Increasing FPS is more important in this project. By higher FPS, the particle movement can be more fine-grained and thus can eliminate the unideal situation when the volume becomes lower. The collision algorithm can be optimized to O(N) instead of O(N^2). The implementation could be much more complex that some data structure like binary tree needed to be used to describe the 2-D plane. With higher computational efficiency, we can add more particles to simulate the situation with higher pressure.</p>
-                    
-                    <p>Moveover, our particle model can be used for computational fluid dynamics. For example, we can put a wing inside our model and calculate the sum of hitting force to determine the lifting force. In this case, viscosity between particles and the wing can also be implemented.</p>
+                    <p>In terms of program design, we could possibly increase the performance through further optimization. Some places use floating point computation. If the value range is carefully managed, all calculations can be safely converted to fix15 point numbers and therefore increases the performance. With longer spare time, it is possible to either increase the frames per second (FPS) or more particles in simulation. Increasing FPS is more important in this project. With higher FPS, the particle movement can be more fine-grained and thus can eliminate the unideal situation when the volume becomes lower. The collision algorithm can be optimized to O(N) instead of O(N^2). The implementation could be much more complex, such that some data structure like binary tree would be needed to describe the 2-D plane. With higher computational efficiency, we can add more particles to simulate the situation with higher pressure.</p>
+                    <p>Moreover, our particle model can be used for computational fluid dynamics. For example, we can put a wing inside our model and calculate the sum of hitting force to determine the lifting force. In this case, viscosity between particles and the wing can also be implemented.</p>
                     
                 </div>
                 <div class="Intellectual_Property_Considerations">
@@ -313,7 +288,7 @@
                     <section>
                         <p>The RP2040 code for this project was based in the protothreads library. 
                             By splitting the synthesis of the beeping sound, tracking of our particles, and the putty user interface into two cores, we were able to implement our code in a "round robin" setup. 
-                            As a basis for our particle algorithm, we used the 5730 lab 2 animation.c and adapted it such that we could utilize methods and integrate the ideas from beep.c into our main code. 
+                            As a basis for our particle algorithm, we used the 5730 lab two animation.c and adapted it such that we could utilize methods and integrate the ideas from beep.c into our main code. 
                             Using these example codes, and the addition of our own methods and calculations, we were able to create our physics simulation.</p>
                     </section>
                 </div>
@@ -347,7 +322,12 @@
             <div class="Work_Distribution" style="background:grey;">
                 <h1>Work Distribution</h1>
                 <section>
-                    <p></p>
+                    <p>We collaborated on the c code of this project. When beginning the project Arthur set up the initial file changes, while Miriya worked on the DDS circuit hardware components. Upon testing that beep.c worked as it had in lab 1, we began to integrate components of the beep code with portions of the boids algorithm. 
+                    </p>
+                    <p>Later while working on this collision model both conducted separate research and ultimately Arthur’s model for the collision calculations was chosen and Arthur coded this model. Miriya began to develop an incremental volume method that was later edited by both Arthur and Miriya to serve as the basis for our pressure vs. volume graph. 
+                    </p>
+                    <p>Furthermore, to assess our model both Arthur and Miriya made changes to finalize and test the program at different stages. When plotting Boyle’s law and different user inputs images and values were recorded to determine constants as well as track our changes made. During these recordings we were able to distinguish whether our optimizations had any visual effects as was mentioned when using the Alpha Max Beta Minimum Algorithm.                        
+                    </p>
                 </section>
             </div>
             <hr>
@@ -356,10 +336,10 @@
                 <div class = "Appendix_a">
                     <h2>Appendix A: Permissions</h2>
                     <section>
-                        <p>The group does not approve this report for inclusion on the course website.</p>
+                        <p>The group approves this report for inclusion on the course website.</p>
                     </section>
                     <section>
-                        <p>The group does not approve the video for inclusion on the course YouTube channel.</p></p>
+                        <p>The group approves the video for inclusion on the course YouTube channel.</p></p>
                     </section>
                 </div>
                 <div class = "Appendix_b">
@@ -430,6 +410,7 @@
                         <p>1. An educational consulting network. Kecia Ray&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kecia Ray is a globally recognized leader in education and a transformation coach. She leads K20Connect, "Here's what the research says about screen time and school-aged kids," Technology Solutions That Drive Education, https://edtechmagazine.com/k12/article/2023/01/heres-what-research-says-about-screen-time-and-school-aged-kids#:~:text=The%20organizations%20also%20note%20that,and%20learning%20beyond%20our%20screens (accessed Dec. 0, 2023). </p>
                         <p>2. Libretexts, "10.5: Kinetic molecular theory of gases," Chemistry LibreTexts, https://chem.libretexts.org/Courses/University_of_Arkansas_Little_Rock/Chem_1402%3A_General_Chemistry_1_(Belford)/Text/10%3A_Gases/10.5%3A__Kinetic_Molecular_Theory_of_Gases (accessed Oct. 22, 2023).</p>
                         <p>3. S. Kahn, "PV diagrams - part 2: Isothermal, isometric, adiabatic processes (video)," Khan Academy, https://www.khanacademy.org/science/ap-physics-2/ap-thermodynamics/ap-laws-of-thermodynamics/v/pv-diagrams-part-2-isothermal-isometric-adiabatic-processes (accessed Dec. 9, 2023). </p>
+                        <p>4. “What is the slope of logp vs logv graph at constant temperature?,” byju, https://byjus.com/question-answer/what-is-the-slope-of-logp-vs-logv-graph-at-constant-temperature/ (accessed Dec. 14, 2023). </p>
                     </section>
             </div>
         </main>
