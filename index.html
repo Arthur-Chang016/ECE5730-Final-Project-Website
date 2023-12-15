@@ -95,6 +95,24 @@
                             <p>Another component of ideal gas law we implemented in our simulation was Boyle's law. According to Boyle's law pressure and volume are inversely related and thus P is proportional to 1/V. In order to make sure that our program was acting in this manner we assumed temperature would be a constant that the user could change from Putty. Through the implementation of calculating Boyle's law at different temperatures, we had a theoretical check for our simulation's pressure vs. volume relationship.</p>
                             <p>An unexpected outcome of changing the temperature in this manner provided us with different isothermal graphs as derived in thermodynamics. Since the temperature was constant, change in temperature was zero and pressure vs. volume graph acted as one would expect isothermal graphs to act at different temperatures. In isothermal graphs as the temperature is increased energy within the system is increased, such a phenomenon was seen in our simulation as temperature was increased it had a direct impact on the kinetic energy average in our model.</p>
                         </section>
+                        
+                        <h2>Collision</h2>
+                        <section>
+                            <p>In our collision simulation, we have the assumption that all particles have the same mass and the same velocity. Therefore the collision model can be largely simplified. However we cannot oversimplify the model. In our first model, we assumed that each particle has an infinite small volume and force field, so when two particles collide, we simply swap their moving direction. This made no difference between the non-colliding model.
+                                Therefore, we introduced the second model: We assumed each particle had a specific volume. To implement this concept, we can translate it to: we perform collision of these 2 particles if their distance is within twice their radius.
+                            </p>
+                            <img src="collision.png" alt="collision" style="width:800px;height:390px;">
+                            <section>
+                                <caption>Figure 10: collision illustration</caption>
+                            </section>
+                            <p>The left picture shows the collision of two particles with the conservation of momentum. We can convert it to the right one for better understanding. Because the particle mass  and the velocities are the same, we only need to consider the direction after the collision. Thus, the surface of the right picture circle serves as a mirror. Therefore, the collision can be modeled as following:</p>
+                            <img src="collision_formula.png" alt="collision_formula" style="width:400px;height:80px;">
+                            <section>
+                                <caption>Figure 11: collision_formula</caption>
+                            </section>
+                            <p>Where vector u is the normalized vector that points from the center of the circle to reflecting point and 2(v  u) u  serves as the speed difference that v needs to change which is perpendicular to the surface of the circle. This equation can perfectly simulate the mirror reflection without too much computation cost and implementation complexity.</p>
+                            
+                        </section>
                     </div>
                     <div class="Logical_Structure">
                         <h2>Logical Structure</h2>
@@ -123,9 +141,77 @@
                     </section>
                 <div class="RP2040_design">
                     <h2>RP2040 Program Design</h2>
+                    
                     <section>
-                        <p></p>
+                        <p>
+                            Our software architecture and computational power distribution
+                        </p>
                     </section>
+                    <section>
+                        <p>
+                            <ul>
+                                <li>Core1 (main computation)</li>
+                                    <ul>
+                                        <li>Particle simulation</li>
+                                    </ul>
+                                <li>Core2 (miscellaneous)</li>
+                                    <ul>
+                                        <li>Particle simulation</li>
+                                        <li>Pressure calculation</li>
+                                        <li>Graph plotting</li>
+                                        <li>Serial input output</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </p>
+                    </section>
+                    <p>
+                        Our design principle is by incremental design. We complete each functionality by gradually adding features on it and making sure it works within our expectation every time. This is one of the most efficient ways to build up a complex system and we can narrow down the place that is most likely to produce bugs. Every time a feature is created, we would set up several hand-crafted unit tests to ensure the basic functionality. The methodology helps a lot even when the project scale grows up. More specifically and practically, we made the program highly modularized, in which we separated each functionality into several functions and made sure each function won't be too long to read or debug. Moreover, we try to keep everything as function calls instead of macro because the function can make a good isolation for variable names and take the advantage of C's type checking. There should be little or no drawback with modern compiler architecture. Functions can be inlined and therefore can have the same performance with macro which put the program into risk by modifying the program in compile time.
+                    </p>
+                    
+                    <h2>Main Functions Explanation</h2>
+                    <h3>Move_particles()</h3>
+                    <section>
+                        <img src="move_particles_code.png" alt="move_particles_code" style="width:800px;height:300px;">
+                        <section>
+                            <caption>Figure 9: Move_particles() pseudocode.</caption>
+                        </section>
+                    </section>
+                    <p>
+                        All particles are stored in global variables and therefore can be accessed by every function, but this slightly decreases the safety of the program.
+                    <!-- </p>
+                    <p> -->
+                        For each 2 particles, if they are both in each other's visual range, then the collision happens. The collision is explained in the physics section. The drawing part is relatively simple: for each frame, the previous positions will be erased, the position will be updated and the new position will be printed (if the position is inside the bound).
+                    <!-- </p>
+                    <p> -->
+                        This is the core computation in our project. If we don't perform the collision the time complexity of this function will be O(N), while our version of collision algorithm complexity is O(N^2) which is much higher and became the bottleneck. of the whole simulation. However the collision is needed because we need to increase the 'chaos' of our system. 
+                    </p>
+                    <p>
+                        When the volume being changed, the wave front will be generated by the moving wall which makes the measurement fluctuate and imprecise especially when the kinetic energy is at lower state. Therefore, we still need the collision to increase the entropy even though, logically, the pressure will be measured the same in a long-term experiment.
+                    <!-- </p>
+                    <p> -->
+                        By the experiment result, the collision actually helps a lot. The wave-like moving particles will be eliminated in a short time (in 3-4 wave period) and quickly make the measured pressure converging to the ideal line. This is obvious when the volume is adjusted in a short period of time.                    
+                    </p>
+                    
+                    <h3>Beeping sound generator</h3>
+                    <p>The sound is generated by Direct Digital Synthesis Algorithm (DDS). The target sine wave will be incrementally generated with the timer interrupt callback. When a particle hits the wall, a swoop sound will be generated once. While the original sound is synthesized every 25 us, we change the frequency of it to 75 but change the increment of the sin phase 3 times larger. This can produce the sound with lower computation consumption. The reason we adjust it to 3 times lower is because if we keep the same as 25 us, the other functionality will become lagging which means it took too much CPU time to do the sound generation. The lowering seems no problem to produce the same result. However, we cannot ignore the noise sound produced by the square wave coming from DDS.</p>
+                    <img src="square_wave.png" alt="square_wave" style="width:800px;height:250px;">
+                    <section>
+                        <caption>Figure 11: Fourier transform of square wave</caption>
+                    </section>
+                    <p>For a perfect square wave, the first harmonic noise comes from 3f. We can treat the procedure of DDS as the perfect sine wave combining with a square wave with the frequency of timer callback. Theoretically, the absolute threshold of hearing of humans is from 20 to 20000 hz. The synthesis period should be higher than 50us. When we adjust it to 75, we can start to hear some unexpected noises, but we treated it as an acceptable trade-off.</p>
+                    
+                    <h3>Low pass filter for graph plotting</h3>
+                    <p>We output the current measured pressure every frame. However if the volume change is too large, the measured pressure will be several unwanted high frequency peaks. Therefore, we implemented a software low pass filter that can average the most recent 5 plotting points. The data structure we use is a queue which is the most suitable one to use in this scenario. Every time we only need to insert and pop one value and calculate the average.
+                    </p>
+                    
+                    <h3>Synchronization Problems</h3>
+                    <p>In our program design, two cores mainly perform different functionalities, so we don't need the explicit synchronization between the two cores. However, there's one situation that we need to solve by waiting on one core. While core0 did the particle plotting, core1 will move the volume line and erase particles outside the bound. In the experiment, sometimes particles outside the bound won't be erased. We debugged for a long time and found that the erasing was slightly earlier than the particle drawing. Some particles will remain unerased permanently. Eventually, we solved this problem by adding PT_YIELD_usec(5000) before the erasing to make sure the erasing was an 'atomic-like' function that won't be interrupted or switched.</p>
+                    
+                    
+                    <!-- <section>
+                        <p></p>
+                    </section> -->
                 </div>
                 <div class="Hardware_design">
                     <h2>Hardware Design</h2>
@@ -213,68 +299,6 @@
                     </section>
                 <div class="Results_Expectations_Future_Changes">
                     <h2>RP2040 Program Design</h2>
-                    <section>
-                        <p>
-                            Our software architecture and computational power distribution
-                        </p>
-                    </section>
-                    <section>
-                        <p>
-                            <ul>
-                                <li>Core1 (main computation)</li>
-                                    <ul>
-                                        <li>Particle simulation</li>
-                                    </ul>
-                                <li>Core2 (miscellaneous)</li>
-                                    <ul>
-                                        <li>Particle simulation</li>
-                                        <li>Pressure calculation</li>
-                                        <li>Graph plotting</li>
-                                        <li>Serial input output</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </p>
-                    </section>
-                    <p>
-                        Our design principle is by incremental design. We complete each functionality by gradually adding features on it and making sure it works within our expectation every time. This is one of the most efficient ways to build up a complex system and we can narrow down the place that is most likely to produce bugs. Every time a feature is created, we would set up several hand-crafted unit tests to ensure the basic functionality. The methodology helps a lot even when the project scale grows up. More specifically and practically, we made the program highly modularized, in which we separated each functionality into several functions and made sure each function won't be too long to read or debug. Moreover, we try to keep everything as function calls instead of macro because the function can make a good isolation for variable names and take the advantage of C's type checking. There should be little or no drawback with modern compiler architecture. Functions can be inlined and therefore can have the same performance with macro which put the program into risk by modifying the program in compile time.
-                    </p>
-                    
-                    <h2>Main Functions Explanation</h2>
-                    <h3>Move_particles()</h3>
-                    <section>
-                        <img src="move_particles_code.png" alt="move_particles_code" style="width:800px;height:300px;">
-                        <section>
-                            <caption>Figure 8: Move_particles() pseudocode.</caption>
-                        </section>
-                    </section>
-                    <p>
-                        All particles are stored in global variables and therefore can be accessed by every function, but this slightly decreases the safety of the program.
-                    <!-- </p>
-                    <p> -->
-                        For each 2 particles, if they are both in each other's visual range, then the collision happens. The collision is explained in the physics section. The drawing part is relatively simple: for each frame, the previous positions will be erased, the position will be updated and the new position will be printed (if the position is inside the bound).
-                    <!-- </p>
-                    <p> -->
-                        This is the core computation in our project. If we don't perform the collision the time complexity of this function will be O(N), while our version of collision algorithm complexity is O(N^2) which is much higher and became the bottleneck. of the whole simulation. However the collision is needed because we need to increase the 'chaos' of our system. 
-                    </p>
-                    <p>
-                        When the volume being changed, the wave front will be generated by the moving wall which makes the measurement fluctuate and imprecise especially when the kinetic energy is at lower state. Therefore, we still need the collision to increase the entropy even though, logically, the pressure will be measured the same in a long-term experiment.
-                    <!-- </p>
-                    <p> -->
-                        By the experiment result, the collision actually helps a lot. The wave-like moving particles will be eliminated in a short time (in 3-4 wave period) and quickly make the measured pressure converging to the ideal line. This is obvious when the volume is adjusted in a short period of time.                    
-                    </p>
-                    
-                    <h3>Beeping sound generator</h3>
-                    <p>The sound is generated by Direct Digital Synthesis Algorithm (DDS). The target sine wave will be incrementally generated with the timer interrupt callback. When a particle hits the wall, a swoop sound will be generated once. While the original sound is synthesized every 25 us, we change the frequency of it to 75 but change the increment of the sin phase 3 times larger. This can produce the sound with lower computation consumption. The reason we adjust it to 3 times lower is because if we keep the same as 25 us, the other functionality will become lagging which means it took too much CPU time to do the sound generation. The lowering seems no problem to produce the same result. However, we cannot ignore the noise sound produced by the square wave coming from DDS.</p>
-                    <img src="square_wave.png" alt="square_wave" style="width:800px;height:250px;">
-                    <p>For a perfect square wave, the first harmonic noise comes from 3f. We can treat the procedure of DDS as the perfect sine wave combining with a square wave with the frequency of timer callback. Theoretically, the absolute threshold of hearing of humans is from 20 to 20000 hz. The synthesis period should be higher than 50us. When we adjust it to 75, we can start to hear some unexpected noises, but we treated it as an acceptable trade-off.</p>
-                    
-                    <h3>Low pass filter for graph plotting</h3>
-                    <p>We output the current measured pressure every frame. However if the volume change is too large, the measured pressure will be several unwanted high frequency peaks. Therefore, we implemented a software low pass filter that can average the most recent 5 plotting points. The data structure we use is a queue which is the most suitable one to use in this scenario. Every time we only need to insert and pop one value and calculate the average.
-                    </p>
-                    
-                    <h3>Synchronization Problems</h3>
-                    <p>In our program design, two cores mainly perform different functionalities, so we don't need the explicit synchronization between the two cores. However, there's one situation that we need to solve by waiting on one core. While core0 did the particle plotting, core1 will move the volume line and erase particles outside the bound. In the experiment, sometimes particles outside the bound won't be erased. We debugged for a long time and found that the erasing was slightly earlier than the particle drawing. Some particles will remain unerased permanently. Eventually, we solved this problem by adding PT_YIELD_usec(5000) before the erasing to make sure the erasing was an 'atomic-like' function that won't be interrupted or switched.</p>
                     
                     
                 </div>
